@@ -2,7 +2,7 @@
 using namespace std;
 
 int main() {
-    cout << "EXPLODE";
+    cout << "EXPLODE     !";
 
     return 0;
 };
