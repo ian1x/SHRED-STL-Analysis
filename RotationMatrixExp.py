@@ -6,6 +6,8 @@ import matplotlib.style as mplstyle
 #The point of this file is to create a random set of points in a point cloud, move it to the origin, and rotate it to be vertical
 #I will plot each step on a new plot which will appear when the script is ran
 
+#I want to change this to a notebook file for better examples
+
 #Rotation Matrix Exploration Figure 1 is the point cloud on its own
 plt.figure(1)
 plt.suptitle('Point Cloud with no changes made')
