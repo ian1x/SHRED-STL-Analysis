@@ -140,11 +140,4 @@ def import_new_stl(stl_file):
         alligned_points=np.stack(alligned_points)
         STL.vectors = np.reshape(alligned_points, vector_shape)
         print("done")
-        return STL
-
-    
-
-
-        
-
-        
+        return STL     
