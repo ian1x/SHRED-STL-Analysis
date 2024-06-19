@@ -10,6 +10,8 @@ from stl import mesh
 from matplotlib import pyplot as plt
 from mpl_toolkits import mplot3d
 from mpl_toolkits.mplot3d import Axes3D
+import alphashape
+from shapely import plotting as sp
 
 class Fin():
     """
@@ -21,7 +23,8 @@ class Fin():
     """
     def __init__(self, name, data_file, STL_file):
         self.data = {'Wind Tunnel' : import_new_data(data_file)[0],
-                     'STL': import_new_stl(STL_file)
+                     'Point_Cloud' : import_new_stl(STL_file)[1], #I am not sure where to put this because I don't want it to run the import new function twice.
+                     'STL': import_new_stl(STL_file)[0]
                     }
         self.meta = {'Name' : name,
                      'Data File' : data_file,
@@ -42,8 +45,28 @@ class Fin():
         print(f"scaling axes...")
         scale = self.data['STL'].points.flatten()
         axes.auto_scale_xyz(scale, scale, scale)
+        axes.set_xlabel("X-Axis")
+        axes.set_ylabel("Y-Axis")
+        axes.set_zlabel("Z-Axis")
         print("done")
+        print(f"plotting...")
         plt.show()
+        print("done")
+    def get_curve(self):
+        print(f"flattening point cloud...")
+        flat_cloud = np.delete(self.data['Point_Cloud'], 2, 1)
+        print("done")
+        print(f"building concave hull...")
+        alpha_shape = alphashape.alphashape(flat_cloud,2.0)
+        print("done")
+        print(f"restacking exterior coordinates...")
+        y = np.array(alpha_shape.exterior.coords.xy[1])
+        x = np.array(alpha_shape.exterior.coords.xy[0])
+        xy = np.column_stack((x,y))
+        print("done")
+        print(f"plotting curve...")
+        sp.plot_polygon(alpha_shape)
+    
         
 
 def get_date(df): 
@@ -140,4 +163,4 @@ def import_new_stl(stl_file):
         alligned_points=np.stack(alligned_points)
         STL.vectors = np.reshape(alligned_points, vector_shape)
         print("done")
-        return STL     
+        return STL, alligned_points     
